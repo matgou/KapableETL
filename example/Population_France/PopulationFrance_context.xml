@@ -1,0 +1,109 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<beans xmlns="http://www.springframework.org/schema/beans"
+    xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+    xmlns:util="http://www.springframework.org/schema/util"
+    xsi:schemaLocation="http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans-3.0.xsd
+      http://www.springframework.org/schema/util http://www.springframework.org/schema/util/spring-util-3.0.xsd">
+   <!-- Input file -->
+   <bean id="fileInput" class="java.io.FileInputStream">
+       <constructor-arg value="Population_France.csv"/>
+   </bean>
+   <!-- Output file -->
+   <bean id="fileOutput" class="java.io.FileOutputStream">
+          <constructor-arg value="Population_France.json"/>
+   </bean>
+
+   <!-- Data Model -->
+   <bean id="yearFormater" class="java.text.SimpleDateFormat">
+       <constructor-arg value="yyyy"/>
+   </bean>
+   <bean id="columnYear" class="info.kapable.tools.pojo.DateTimeDimention">
+       <constructor-arg value="0"/>
+       <constructor-arg ref="yearFormater"/>
+   </bean>
+
+   <bean id="monthFormater" class="java.text.SimpleDateFormat">
+       <constructor-arg value="MM"/>
+   </bean>
+   <bean id="columnMonth" class="info.kapable.tools.pojo.DateTimeDimention">
+       <constructor-arg value="1"/>
+       <constructor-arg ref="monthFormater"/>
+   </bean>
+
+   <bean id="dateFormater" class="java.text.SimpleDateFormat">
+       <constructor-arg value="MM/yyyy"/>
+   </bean>
+   <bean id="columnDate" class="info.kapable.tools.pojo.DateTimeDimention">
+       <constructor-arg value="3"/>
+       <constructor-arg ref="dateFormater"/>
+   </bean>
+
+   <bean id="columnValue" class="info.kapable.tools.pojo.Dimention">
+       <constructor-arg value="2"/>
+       <constructor-arg value="java.lang.Integer" />
+   </bean>
+
+   <bean id="dataInputMapping" class="info.kapable.tools.MappingModel.IndexedMapModel">
+	<property name="column">
+		<list>
+			<ref bean="columnYear" />
+			<ref bean="columnMonth" />
+			<ref bean="columnValue" />
+		</list>
+        </property>
+   </bean>
+
+   <bean id="dataOutputMapping" class="info.kapable.tools.MappingModel.NamedMapModel">
+        <property name="attributes">
+                <util:map map-class="java.util.HashMap" key-type="java.lang.String" value-type="info.kapable.tools.pojo.Dimention">
+	                <entry key="date" value-ref="columnDate"/>
+	                <entry key="nombre" value-ref="columnValue"/>
+                </util:map>
+        </property>
+   </bean>
+
+
+   <!-- CSV Reader -->
+   <bean id="input" class="info.kapable.tools.DataReader.CSVDataReader">
+       <constructor-arg ref="fileInput" />
+       <constructor-arg ref="dataInputMapping" />
+       <constructor-arg value=";"/>
+        <property name="headerToIgnore" value="3" />
+   </bean>
+
+   <bean id="additionYearAndMonthOperation" class="info.kapable.tools.DataTransform.Addition">
+        <property name="input">
+                <list>
+                        <ref bean="input"/>
+                </list>
+        </property>
+	<property name="dimentionToSum">
+                <list>
+                        <ref bean="columnYear"/>
+                        <ref bean="columnMonth"/>
+                </list>
+        </property>
+        <property name="dimentionResult" ref="columnDate"/>
+   </bean>
+
+   <!-- Chart Writer -->
+   <bean id="output" class="info.kapable.tools.DataWriter.ChartDataWriter">
+        <constructor-arg><value>test.jpg</value></constructor-arg>
+	<property name="xTitle"><value>Periode</value></property>
+	<property name="xDimention"><ref local="columnDate" /></property>
+        <property name="chartTitle"><value>Population Francaise</value></property>
+        <property name="yTitle"><value>Million d'individus</value></property>
+        <property name="dimentionToGraph">
+		<util:map>
+                        <entry key="nombre" value-ref="columnValue"/>
+		</util:map>
+	</property>
+   </bean>
+   <bean class="org.springframework.beans.factory.config.MethodInvokingFactoryBean">
+	<property name="targetObject"><ref local="output" /></property>
+	<property name="targetMethod"><value>addInput</value></property>
+	<property name="arguments"><list><ref bean="additionYearAndMonthOperation" /></list></property>
+   </bean>
+
+</beans>

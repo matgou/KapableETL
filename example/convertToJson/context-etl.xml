@@ -1,0 +1,69 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<beans xmlns="http://www.springframework.org/schema/beans"
+    xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+    xmlns:util="http://www.springframework.org/schema/util"
+    xsi:schemaLocation="http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans-3.0.xsd
+      http://www.springframework.org/schema/util http://www.springframework.org/schema/util/spring-util-3.0.xsd">
+   <!-- Input file -->
+   <bean id="fileInput" class="java.io.FileInputStream">
+       <constructor-arg value="test.csv"/>
+   </bean>
+   <!-- Output file -->
+   <bean id="fileOutput" class="java.io.FileOutputStream">
+          <constructor-arg value="test-output.csv"/>
+   </bean>
+
+   <!-- Data Model -->
+   <bean id="dateFormater" class="java.text.SimpleDateFormat">
+       <constructor-arg value="dd/MM/yyyy"/>
+   </bean>
+   <bean id="columnDate" class="info.kapable.tools.pojo.DateTimeDimention">
+       <constructor-arg value="0"/>
+       <constructor-arg ref="dateFormater"/>
+   </bean>
+   
+   <bean id="columnValue" class="info.kapable.tools.pojo.Dimention">
+       <constructor-arg value="1"/>
+       <constructor-arg value="java.lang.Integer" />
+   </bean>
+
+   <bean id="dataInputMapping" class="info.kapable.tools.MappingModel.IndexedMapModel">
+	<property name="column">
+		<list>
+			<ref bean="columnDate" />
+			<ref bean="columnValue" />
+		</list>
+        </property>
+   </bean>
+
+   <bean id="dataOutputMapping" class="info.kapable.tools.MappingModel.NamedMapModel">
+        <property name="attributes">
+                <util:map map-class="java.util.HashMap" key-type="java.lang.String" value-type="info.kapable.tools.pojo.Dimention">
+	                <entry key="dateNaissance" value-ref="columnDate"/>
+	                <entry key="nombre" value-ref="columnValue"/>
+                </util:map>
+        </property>
+   </bean>
+
+
+   <!-- CSV Reader -->
+   <bean id="input" class="info.kapable.tools.DataReader.CSVDataReader">
+       <constructor-arg ref="fileInput" />
+       <constructor-arg ref="dataInputMapping" />
+       <constructor-arg value=";"/>
+   </bean>
+
+   <!-- JSON Writer -->
+   <bean id="output" class="info.kapable.tools.DataWriter.JsonDataWriter">
+       <!-- <constructor-arg><util:constant static-field="java.lang.System.out" /></constructor-arg> -->
+       <constructor-arg ref="fileOutput" /> 
+       <constructor-arg ref="dataOutputMapping" />
+   </bean>
+   <bean class="org.springframework.beans.factory.config.MethodInvokingFactoryBean">
+	<property name="targetObject"><ref local="output" /></property>
+	<property name="targetMethod"><value>addInput</value></property>
+	<property name="arguments"><list><ref bean="input" /></list></property>
+   </bean>
+
+</beans>
