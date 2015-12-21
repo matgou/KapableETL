@@ -1,20 +1,18 @@
 package info.kapable.tools.pojo;
 
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 import info.kapable.tools.Exception.DimensionException;
 
 public class Vector {
-	private List<Object> values;
+	private Map<Integer,Object> values;
 	
-	public Vector(int dimentionLenght)
+	public Vector()
 	{
-		this.values = new ArrayList<Object>();
-		for(int i = 0; i < dimentionLenght; i++)
-		{
-			this.values.add(null);
-		}
+		this.values = new HashMap<Integer,Object>();
 	}
 	
 	/**
@@ -26,11 +24,19 @@ public class Vector {
 	 */
 	public void set(int dimension, Object value) throws DimensionException
 	{
-		if(dimension < 0 || dimension >= this.values.size())
-		{
-			throw new DimensionException("Trying to put value in unkown dimention (vector is an object in " + this.values.size() + " dimentions)");
+		this.values.put(dimension, value);
+	}
+	public void set(Dimension dimension, Object value) throws DimensionException
+	{
+		try {
+			if(Class.forName(dimension.getType()).isInstance(value))
+				this.values.put(dimension.index, value);
+			else
+				throw new DimensionException("Trying to put value of invalid type into dimention");
+		} catch (ClassNotFoundException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
 		}
-		this.values.set(dimension, value);
 	}
 	
 	/**
@@ -43,21 +49,24 @@ public class Vector {
 	{
 		return this.values.get(dimension);
 	}
-	public Object get(Dimension dimension)
+	public Object get(Dimension dimension) throws DimensionException
 	{
-		return this.values.get(dimension.index);
+		if(this.values.containsKey(dimension.index))
+			return this.values.get(dimension.index);
+		else 
+			throw new DimensionException("Vector as no dimension: " + dimension.index + "(" + dimension.type + ")");
 	}
 
-	public List<Object> getAllValues()
+	public Map<Integer, Object> getAllValues()
 	{
 		return this.values;
 	}
-	public void set(Dimension dim, Object valFromString) throws DimensionException {
-		this.set(dim.index, valFromString);
-		
-	}
 
 	public void addDimension(Dimension dimensionResult, Object resultVal) {
-		this.values.add(resultVal);
+		this.values.put(dimensionResult.index,resultVal);
+	}
+
+	public boolean hasDimension() {
+		return (this.values.size()!=0);
 	}
 }

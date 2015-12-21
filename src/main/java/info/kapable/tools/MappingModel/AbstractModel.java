@@ -19,6 +19,6 @@ public abstract class AbstractModel {
 	public abstract void setColumn(List<Dimension> dim);
 	
 	public Vector newVector() {
-		return new Vector(this.getDimentionLenght());
+		return new Vector();
 	}
 }

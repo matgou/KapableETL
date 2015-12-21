@@ -5,6 +5,7 @@ import static org.junit.Assert.*;
 import org.junit.Test;
 
 import info.kapable.tools.DataReader.CSVDataReader;
+import info.kapable.tools.Exception.DimensionException;
 import info.kapable.tools.MappingModel.IndexedMapModel;
 import info.kapable.tools.pojo.DateTimeDimension;
 import info.kapable.tools.pojo.Dimension;
@@ -66,6 +67,10 @@ public class CSVDataReaderTest {
 				// TODO Auto-generated catch block
 				fail("ParseException raise");
 				e.printStackTrace();
+			} catch (DimensionException e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+				fail("DimensionException raise");
 			}
 			
 		} catch (UnsupportedEncodingException e) {

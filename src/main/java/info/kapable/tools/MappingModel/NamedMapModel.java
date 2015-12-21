@@ -49,7 +49,8 @@ public class NamedMapModel extends IndexedMapModel {
 	{
 		return this.getName(dim.getIndex());
 	}
-
+	
+	
 	public List<Dimension> getDimentions() {
 		List<Dimension> list = new ArrayList<Dimension>();
 		Iterator<Entry<Integer, Dimension>> it = this.modelMap.entrySet().iterator();

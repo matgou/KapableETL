@@ -5,6 +5,7 @@ import java.io.IOException;
 import java.io.OutputStream;
 import java.io.OutputStreamWriter;
 import java.util.List;
+import java.util.Map;
 
 import com.fasterxml.jackson.core.JsonFactory;
 import com.fasterxml.jackson.core.JsonProcessingException;
@@ -13,6 +14,7 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.databind.node.ArrayNode;
 import com.fasterxml.jackson.databind.node.ObjectNode;
 
+import info.kapable.tools.Exception.DimensionException;
 import info.kapable.tools.MappingModel.NamedMapModel;
 import info.kapable.tools.pojo.Dimension;
 import info.kapable.tools.pojo.Vector;
@@ -36,13 +38,18 @@ public class JsonDataWriter extends AbstractDataWriter {
 	}
 	@Override
 	public void write(Vector vector) {
-		List<Object> vectorValues = vector.getAllValues();
 		ObjectNode node = mapper.createObjectNode();
 		for(Dimension dim: this.model.getDimentions())
 		{
-			String string = dim.getStringFromVal(vector.get(dim));
-			String colName = model.getName(dim);
-			node.put(colName, string);
+			String string;
+			try {
+				string = dim.getStringFromVal(vector.get(dim));
+				String colName = model.getName(dim);
+				node.put(colName, string);
+			} catch (DimensionException e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			}
 		}
 		root.add(node);
 	}

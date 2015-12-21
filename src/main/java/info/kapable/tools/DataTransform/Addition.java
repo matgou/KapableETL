@@ -5,6 +5,7 @@ import java.util.Date;
 import java.util.Calendar;
 import java.util.List;
 
+import info.kapable.tools.Exception.DimensionException;
 import info.kapable.tools.Exception.NotSummableException;
 import info.kapable.tools.pojo.Dimension;
 import info.kapable.tools.pojo.Vector;
@@ -45,9 +46,15 @@ public class Addition extends AbstractDataTransform {
 			{
 				for(Dimension dim: this.getDimensionToSum())
 				{
-					Integer retour = (Integer) vector.get(dim);
-					Integer init = (Integer) resultVal;
-					resultVal = init + retour;
+					Integer retour;
+					try {
+						retour = (Integer) vector.get(dim);
+						Integer init = (Integer) resultVal;
+						resultVal = init + retour;
+					} catch (DimensionException e) {
+						// TODO Auto-generated catch block
+						e.printStackTrace();
+					}
 				}
 			} else if(Date.class.isInstance(resultVal))
 			{
@@ -58,12 +65,18 @@ public class Addition extends AbstractDataTransform {
 					cal.setTime((java.util.Date) resultVal);
 					long orig = cal.getTimeInMillis();
 					
-					Date inputTime = (Date) vector.get(dim);
-					Calendar calInput = Calendar.getInstance();
-					calInput.setTime((java.util.Date) inputTime);
-					long toAdd = calInput.getTimeInMillis();
+					Date inputTime;
+					try {
+						inputTime = (Date) vector.get(dim);
+						Calendar calInput = Calendar.getInstance();
+						calInput.setTime((java.util.Date) inputTime);
+						long toAdd = calInput.getTimeInMillis();
 
-					resultVal = new Date(orig + toAdd);
+						resultVal = new Date(orig + toAdd);
+					} catch (DimensionException e) {
+						// TODO Auto-generated catch block
+						e.printStackTrace();
+					}
 				}
 			} else {
 				throw new NotSummableException("Le type " + dimensionResult.getType() + " ne peux pas être additionné");
