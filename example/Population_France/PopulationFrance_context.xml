@@ -7,11 +7,7 @@
       http://www.springframework.org/schema/util http://www.springframework.org/schema/util/spring-util.xsd">
    <!-- Input file -->
    <bean id="fileInput" class="java.io.FileInputStream">
-       <constructor-arg value="Population_France.csv"/>
-   </bean>
-   <!-- Output file -->
-   <bean id="fileOutput" class="java.io.FileOutputStream">
-          <constructor-arg value="Population_France.json"/>
+       <constructor-arg value="example/Population_France/Population_France.csv"/>
    </bean>
 
    <!-- Data Model -->
@@ -62,6 +58,7 @@
         <property name="headerToIgnore" value="3" />
    </bean>
 
+   <!-- Addition year column with month column to build date -->
    <bean id="additionYearAndMonthOperation" class="info.kapable.tools.DataTransform.Addition">
         <property name="input">
                 <list>
@@ -79,7 +76,12 @@
 
    <!-- Chart Writer -->
    <bean id="output" class="info.kapable.tools.DataWriter.ChartDataWriter">
-        <constructor-arg><value>test.jpg</value></constructor-arg>
+        <constructor-arg><value>Population_France.jpg</value></constructor-arg>
+        <property name="input">
+		<list>
+			<ref bean="additionYearAndMonthOperation" />
+		</list>
+	</property>
 	<property name="xTitle"><value>Periode</value></property>
 	<property name="xDimention" ref="columnDate"></property>
         <property name="chartTitle"><value>Population Francaise</value></property>
@@ -89,11 +91,6 @@
                         <entry key="nombre d'individus" value-ref="columnValue"/>
 		</util:map>
 	</property>
-   </bean>
-   <bean class="org.springframework.beans.factory.config.MethodInvokingFactoryBean">
-	<property name="targetObject" ref="output" ></property>
-	<property name="targetMethod"><value>addInput</value></property>
-	<property name="arguments"><list><ref bean="additionYearAndMonthOperation" /></list></property>
    </bean>
 
 </beans>

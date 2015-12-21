@@ -15,8 +15,8 @@ public abstract class AbstractDataWriter {
 		this.input = new ArrayList<AbstractDataReader>();
 	}
 	
-	public void addInput(AbstractDataReader dataReader) {
-		this.input.add(dataReader);
+	public void setInput(List<AbstractDataReader> dataReaders) {
+		this.input = dataReaders;
 	}
 	
 	public List<AbstractDataReader> getInput()

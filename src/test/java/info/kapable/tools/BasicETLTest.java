@@ -6,7 +6,10 @@ import java.io.ByteArrayInputStream;
 import java.io.IOException;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
+import java.util.ArrayList;
+import java.util.List;
 
+import info.kapable.tools.DataReader.AbstractDataReader;
 import info.kapable.tools.DataReader.CSVDataReader;
 import info.kapable.tools.DataWriter.JsonDataWriter;
 import info.kapable.tools.MappingModel.IndexedMapModel;
@@ -75,7 +78,9 @@ public class BasicETLTest
 			ByteArrayInputStream stream = new ByteArrayInputStream(bytes);
 			CSVDataReader dataReader = new CSVDataReader(stream, model, ";");
 			JsonDataWriter dataWriter = new JsonDataWriter(System.out, model);
-			dataWriter.addInput(dataReader);
+			List<AbstractDataReader> input = new ArrayList<AbstractDataReader>();
+			input.add(dataReader);
+			dataWriter.setInput(input);
 			dataWriter.process();
 			dataWriter.close();
 

@@ -5,38 +5,35 @@ import java.util.Date;
 import java.util.Calendar;
 import java.util.List;
 
-import info.kapable.tools.DataReader.AbstractDataReader;
 import info.kapable.tools.Exception.NotSummableException;
 import info.kapable.tools.pojo.Dimention;
 import info.kapable.tools.pojo.Vector;
 
+/**
+ * This class can sum attributes of vector, attributes must be Date or Integer
+ * 
+ * You must defined a new dimension to store the result via the dimentionResult property
+ * You must defined the list of dimension to sum via the dimentionToSum property
+ * @author matgou
+ *
+ */
 public class Addition extends AbstractDataTransform {
 
+	/**
+	 * the list of dimension to sum
+	 */
 	private List<Dimention> dimentionToSum;
-	private int currentReaderIndex = 0;
+	/**
+	 * a new dimension to store the result
+	 */
 	private Dimention dimentionResult;
-	
-	private AbstractDataReader currentReader;
 
-	public void setInput(List<AbstractDataReader> input) {
-		this.input = input;
-		this.currentReader = input.get(currentReaderIndex);
-	}
-	
 	@Override
 	public Vector doRead() throws IOException {
-		
-		Vector vector = this.currentReader.doRead();
+		Vector vector = super.doRead();
+		// if empty
 		if(vector == null)
-		{
-			if(currentReaderIndex >= this.input.size()-1)
-			{
-				return null;
-			}
-			currentReaderIndex=currentReaderIndex+1;
-			this.currentReader = input.get(currentReaderIndex);
-			vector = this.currentReader.doRead();
-		}
+			return null;
 		Object resultVal = null;
 		@SuppressWarnings("rawtypes")
 		Class resultClass;
@@ -57,7 +54,6 @@ public class Addition extends AbstractDataTransform {
 				resultVal = new Date(0);
 				for(Dimention dim: this.getDimentionToSum())
 				{
-
 					Calendar cal = Calendar.getInstance();
 					cal.setTime((java.util.Date) resultVal);
 					long orig = cal.getTimeInMillis();
@@ -89,13 +85,21 @@ public class Addition extends AbstractDataTransform {
 		return vector;
 	}
 	
-	
+	/**
+	 * Defined the list of dimension to sum
+	 * @return
+	 */
 	public List<Dimention> getDimentionToSum() {
 		return dimentionToSum;
 	}
 	public void setDimentionToSum(List<Dimention> dimentionToSum) {
 		this.dimentionToSum = dimentionToSum;
 	}
+	
+	/**
+	 * Defined a new dimension to store the result
+	 * @return
+	 */
 	public Dimention getDimentionResult() {
 		return dimentionResult;
 	}

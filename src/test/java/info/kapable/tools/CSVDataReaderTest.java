@@ -35,14 +35,14 @@ public class CSVDataReaderTest {
 				+ "20/11/1988;17;18\n";
 
 		IndexedMapModel model = new IndexedMapModel();
-		// Column 0 map to dimention 0 (format date)
+		// Column 0 map to dimension 0 (format date)
 		SimpleDateFormat simpleDateFormat = new SimpleDateFormat("dd/MM/yyyy");
 		DateTimeDimention column0 = new DateTimeDimention(0, simpleDateFormat);
 		model.setMapping(0,column0);
-		// Column 1 map to dimention 1 (format string)
+		// Column 1 map to dimension 1 (format string)
 		Dimention column1 = new Dimention(1, "java.lang.String");
 		model.setMapping(1, column1);
-		// Column 2 map to dimention 2 (format integer)
+		// Column 2 map to dimension 2 (format integer)
 		Dimention column3 = new Dimention(2, "java.lang.Integer");
 		model.setMapping(2, column3);
 		
