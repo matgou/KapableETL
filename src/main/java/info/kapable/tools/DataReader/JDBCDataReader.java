@@ -15,9 +15,9 @@ import info.kapable.tools.pojo.Vector;
 
 public class JDBCDataReader extends AbstractDataReader {
 
-	private String JDBCDriver = "com.mysql.jdbc.Driver";  
-	private String dbURL = "jdbc:mysql://localhost/EMP";
-	private String sql = "SELECT id, first, last, age FROM Employees";
+	private String JDBCDriver = "";  
+	private String dbURL = "";
+	private String sql = "";
 	private ResultSet rs;
 	
 
@@ -82,6 +82,7 @@ public class JDBCDataReader extends AbstractDataReader {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
+		// return vector only if vector contains value
 		if(vector.hasDimension())
 			return vector;
 		return null;

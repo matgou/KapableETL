@@ -43,7 +43,7 @@
    <bean id="input" class="info.kapable.tools.DataReader.JDBCDataReader">
        <property name="model"><ref bean="dataInputMapping" /></property>
        <property name="JDBCDriver"><value>org.hsqldb.jdbcDriver</value></property>
-       <property name="dbURL"><value>jdbc:hsqldb:file:example_db</value></property>
+       <property name="dbURL"><value>jdbc:hsqldb:file:example/readFromJDBC/example_db</value></property>
        <property name="dbUsername"><value>SA</value></property>
        <property name="dbPassword"><value></value></property>
        <property name="sql" value="SELECT * FROM CUSTOMER"></property>
