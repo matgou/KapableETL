@@ -2,7 +2,7 @@ package info.kapable.tools.pojo;
 
 import info.kapable.tools.Exception.ConversionNotFoundException;
 
-public class Dimention {
+public class Dimension {
 	int index;
 	String type;
 	
@@ -11,7 +11,7 @@ public class Dimention {
 		return this.index;
 	}
 	
-	public Dimention (int index, String type)
+	public Dimension (int index, String type)
 	{
 		this.index = index;
 		this.type = type;

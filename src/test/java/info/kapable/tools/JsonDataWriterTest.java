@@ -10,10 +10,10 @@ import java.text.SimpleDateFormat;
 import org.junit.Test;
 
 import info.kapable.tools.DataWriter.JsonDataWriter;
-import info.kapable.tools.Exception.DimentionException;
+import info.kapable.tools.Exception.DimensionException;
 import info.kapable.tools.MappingModel.NamedMapModel;
-import info.kapable.tools.pojo.DateTimeDimention;
-import info.kapable.tools.pojo.Dimention;
+import info.kapable.tools.pojo.DateTimeDimension;
+import info.kapable.tools.pojo.Dimension;
 import info.kapable.tools.pojo.Vector;
 
 public class JsonDataWriterTest {
@@ -23,13 +23,13 @@ public class JsonDataWriterTest {
 		NamedMapModel model = new NamedMapModel();
 		// Column 0 map to dimention 0 (format date)
 		SimpleDateFormat simpleDateFormat = new SimpleDateFormat("dd/MM/yyyy");
-		DateTimeDimention column0 = new DateTimeDimention(0, simpleDateFormat);
+		DateTimeDimension column0 = new DateTimeDimension(0, simpleDateFormat);
 		model.setMapping(0, column0, "Date");
 		// Column 1 map to dimention 1 (format string)
-		Dimention column1 = new Dimention(1, "java.lang.String");
+		Dimension column1 = new Dimension(1, "java.lang.String");
 		model.setMapping(1, column1, "titre");
 		// Column 2 map to dimention 2 (format integer)
-		Dimention column3 = new Dimention(2, "java.lang.Integer");
+		Dimension column3 = new Dimension(2, "java.lang.Integer");
 		model.setMapping(2, column3, "valeur");
 		
 		OutputStream output = new ByteArrayOutputStream();
@@ -53,7 +53,7 @@ public class JsonDataWriterTest {
 			
 			assertTrue(output.toString().contains("Mathieu"));
 			assertTrue(output.toString().contains("Johanna"));
-		} catch (DimentionException e) {
+		} catch (DimensionException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
 			fail("DimentionException raise");

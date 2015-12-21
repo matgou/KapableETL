@@ -4,15 +4,15 @@ import java.io.InputStream;
 import java.util.HashMap;
 import java.util.List;
 
-import info.kapable.tools.pojo.Dimention;
+import info.kapable.tools.pojo.Dimension;
 
 public class IndexedMapModel extends AbstractModel {
 
-	HashMap<Integer, Dimention> modelMap;
+	HashMap<Integer, Dimension> modelMap;
 	
 	public IndexedMapModel()
 	{
-		this.modelMap = new HashMap<Integer, Dimention>();
+		this.modelMap = new HashMap<Integer, Dimension>();
 	}
 	
 	/**
@@ -20,9 +20,9 @@ public class IndexedMapModel extends AbstractModel {
 	 * @param index
 	 * @param type Java class name String 
 	 */
-	public void setMapping(Integer index, Dimention dimention)
+	public void setMapping(Integer index, Dimension dimension)
 	{
-		this.modelMap.put(index, dimention);
+		this.modelMap.put(index, dimension);
 	}
 	
 	/**
@@ -45,14 +45,14 @@ public class IndexedMapModel extends AbstractModel {
 		return this.modelMap.size();
 	}
 
-	public Dimention getDimentionFor(int i) {
+	public Dimension getDimentionFor(int i) {
 		return this.modelMap.get(i);
 	}
 
 	@Override
-	public void setColumn(List<Dimention> dims) {
+	public void setColumn(List<Dimension> dims) {
 		this.modelMap.clear();
-		for(Dimention dim: dims) {
+		for(Dimension dim: dims) {
 			this.setMapping(dim.getIndex(), dim);
 		}
 	}

@@ -1,8 +1,8 @@
 package info.kapable.tools.Exception;
 
-public class DimentionException extends Exception {
+public class DimensionException extends Exception {
 
-	public DimentionException(String string) {
+	public DimensionException(String string) {
 		super(string);
 	}
 

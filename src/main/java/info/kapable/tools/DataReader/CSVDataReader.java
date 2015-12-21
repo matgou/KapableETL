@@ -6,11 +6,11 @@ import java.io.InputStream;
 import java.io.InputStreamReader;
 
 import info.kapable.tools.Exception.ConversionNotFoundException;
-import info.kapable.tools.Exception.DimentionException;
+import info.kapable.tools.Exception.DimensionException;
 import info.kapable.tools.Exception.NotCompatibleMappingException;
 import info.kapable.tools.MappingModel.AbstractModel;
 import info.kapable.tools.MappingModel.IndexedMapModel;
-import info.kapable.tools.pojo.Dimention;
+import info.kapable.tools.pojo.Dimension;
 import info.kapable.tools.pojo.Vector;
 
 public class CSVDataReader extends AbstractDataReader {
@@ -75,16 +75,16 @@ public class CSVDataReader extends AbstractDataReader {
 				String[] data = line.split(this.separator);
 				for(int i=0; i < data.length; i++)
 				{
-					Dimention dim = this.dataModel.getDimentionFor(i);
+					Dimension dim = this.dataModel.getDimentionFor(i);
 					if(dim == null)
 					{
-						throw new DimentionException("Dimention for column "+(i+1)+" is not defined");
+						throw new DimensionException("Dimention for column "+(i+1)+" is not defined");
 					}
 					vector.set(dim, dim.getValFromString(data[i]));
 				}
 				return vector;
 			}
-		} catch (DimentionException e) {
+		} catch (DimensionException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
 		} catch (ConversionNotFoundException e) {

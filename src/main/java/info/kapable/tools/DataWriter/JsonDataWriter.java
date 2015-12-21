@@ -14,7 +14,7 @@ import com.fasterxml.jackson.databind.node.ArrayNode;
 import com.fasterxml.jackson.databind.node.ObjectNode;
 
 import info.kapable.tools.MappingModel.NamedMapModel;
-import info.kapable.tools.pojo.Dimention;
+import info.kapable.tools.pojo.Dimension;
 import info.kapable.tools.pojo.Vector;
 
 public class JsonDataWriter extends AbstractDataWriter {
@@ -38,7 +38,7 @@ public class JsonDataWriter extends AbstractDataWriter {
 	public void write(Vector vector) {
 		List<Object> vectorValues = vector.getAllValues();
 		ObjectNode node = mapper.createObjectNode();
-		for(Dimention dim: this.model.getDimentions())
+		for(Dimension dim: this.model.getDimentions())
 		{
 			String string = dim.getStringFromVal(vector.get(dim));
 			String colName = model.getName(dim);

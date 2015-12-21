@@ -6,14 +6,14 @@ import java.util.Calendar;
 import java.util.List;
 
 import info.kapable.tools.Exception.NotSummableException;
-import info.kapable.tools.pojo.Dimention;
+import info.kapable.tools.pojo.Dimension;
 import info.kapable.tools.pojo.Vector;
 
 /**
  * This class can sum attributes of vector, attributes must be Date or Integer
  * 
- * You must defined a new dimension to store the result via the dimentionResult property
- * You must defined the list of dimension to sum via the dimentionToSum property
+ * You must defined a new dimension to store the result via the dimensionResult property
+ * You must defined the list of dimension to sum via the dimensionToSum property
  * @author matgou
  *
  */
@@ -22,11 +22,11 @@ public class Addition extends AbstractDataTransform {
 	/**
 	 * the list of dimension to sum
 	 */
-	private List<Dimention> dimentionToSum;
+	private List<Dimension> dimensionToSum;
 	/**
 	 * a new dimension to store the result
 	 */
-	private Dimention dimentionResult;
+	private Dimension dimensionResult;
 
 	@Override
 	public Vector doRead() throws IOException {
@@ -38,12 +38,12 @@ public class Addition extends AbstractDataTransform {
 		@SuppressWarnings("rawtypes")
 		Class resultClass;
 		try {
-			resultClass = Class.forName(dimentionResult.getType());
+			resultClass = Class.forName(dimensionResult.getType());
 			
 			resultVal = resultClass.newInstance();
 			if(Integer.class.isInstance(resultVal))
 			{
-				for(Dimention dim: this.getDimentionToSum())
+				for(Dimension dim: this.getDimensionToSum())
 				{
 					Integer retour = (Integer) vector.get(dim);
 					Integer init = (Integer) resultVal;
@@ -52,7 +52,7 @@ public class Addition extends AbstractDataTransform {
 			} else if(Date.class.isInstance(resultVal))
 			{
 				resultVal = new Date(0);
-				for(Dimention dim: this.getDimentionToSum())
+				for(Dimension dim: this.getDimensionToSum())
 				{
 					Calendar cal = Calendar.getInstance();
 					cal.setTime((java.util.Date) resultVal);
@@ -66,7 +66,7 @@ public class Addition extends AbstractDataTransform {
 					resultVal = new Date(orig + toAdd);
 				}
 			} else {
-				throw new NotSummableException("Le type " + dimentionResult.getType() + " ne peux pas être additionné");
+				throw new NotSummableException("Le type " + dimensionResult.getType() + " ne peux pas être additionné");
 			}
 		} catch (ClassNotFoundException e) {
 			// TODO Auto-generated catch block
@@ -81,7 +81,7 @@ public class Addition extends AbstractDataTransform {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
-		vector.addDimention(dimentionResult, resultVal);
+		vector.addDimension(dimensionResult, resultVal);
 		return vector;
 	}
 	
@@ -89,22 +89,22 @@ public class Addition extends AbstractDataTransform {
 	 * Defined the list of dimension to sum
 	 * @return
 	 */
-	public List<Dimention> getDimentionToSum() {
-		return dimentionToSum;
+	public List<Dimension> getDimensionToSum() {
+		return dimensionToSum;
 	}
-	public void setDimentionToSum(List<Dimention> dimentionToSum) {
-		this.dimentionToSum = dimentionToSum;
+	public void setDimensionToSum(List<Dimension> dimensionToSum) {
+		this.dimensionToSum = dimensionToSum;
 	}
 	
 	/**
 	 * Defined a new dimension to store the result
 	 * @return
 	 */
-	public Dimention getDimentionResult() {
-		return dimentionResult;
+	public Dimension getDimensionResult() {
+		return dimensionResult;
 	}
-	public void setDimentionResult(Dimention dimentionResult) {
-		this.dimentionResult = dimentionResult;
+	public void setDimensionResult(Dimension dimensionResult) {
+		this.dimensionResult = dimensionResult;
 	}
 
 }

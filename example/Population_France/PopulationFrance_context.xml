@@ -5,16 +5,13 @@
     xmlns:util="http://www.springframework.org/schema/util"
     xsi:schemaLocation="http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans.xsd
       http://www.springframework.org/schema/util http://www.springframework.org/schema/util/spring-util.xsd">
-   <!-- Input file -->
-   <bean id="fileInput" class="java.io.FileInputStream">
-       <constructor-arg value="example/Population_France/Population_France.csv"/>
-   </bean>
+
 
    <!-- Data Model -->
    <bean id="yearFormater" class="java.text.SimpleDateFormat">
        <constructor-arg value="yyyy"/>
    </bean>
-   <bean id="columnYear" class="info.kapable.tools.pojo.DateTimeDimention">
+   <bean id="columnYear" class="info.kapable.tools.pojo.DateTimeDimension">
        <constructor-arg value="0"/>
        <constructor-arg ref="yearFormater"/>
    </bean>
@@ -22,7 +19,7 @@
    <bean id="monthFormater" class="java.text.SimpleDateFormat">
        <constructor-arg value="MM"/>
    </bean>
-   <bean id="columnMonth" class="info.kapable.tools.pojo.DateTimeDimention">
+   <bean id="columnMonth" class="info.kapable.tools.pojo.DateTimeDimension">
        <constructor-arg value="1"/>
        <constructor-arg ref="monthFormater"/>
    </bean>
@@ -30,12 +27,12 @@
    <bean id="dateFormater" class="java.text.SimpleDateFormat">
        <constructor-arg value="MM/yyyy"/>
    </bean>
-   <bean id="columnDate" class="info.kapable.tools.pojo.DateTimeDimention">
+   <bean id="columnDate" class="info.kapable.tools.pojo.DateTimeDimension">
        <constructor-arg value="3"/>
        <constructor-arg ref="dateFormater"/>
    </bean>
 
-   <bean id="columnValue" class="info.kapable.tools.pojo.Dimention">
+   <bean id="columnValue" class="info.kapable.tools.pojo.Dimension">
        <constructor-arg value="2"/>
        <constructor-arg value="java.lang.Integer" />
    </bean>
@@ -49,7 +46,10 @@
 		</list>
         </property>
    </bean>
-
+   <!-- Input file -->
+   <bean id="fileInput" class="java.io.FileInputStream">
+       <constructor-arg value="example/Population_France/Population_France.csv"/>
+   </bean>
    <!-- CSV Reader -->
    <bean id="input" class="info.kapable.tools.DataReader.CSVDataReader">
        <constructor-arg ref="fileInput" />
@@ -65,13 +65,13 @@
                         <ref bean="input"/>
                 </list>
         </property>
-	<property name="dimentionToSum">
+	<property name="dimensionToSum">
                 <list>
                         <ref bean="columnYear"/>
                         <ref bean="columnMonth"/>
                 </list>
         </property>
-        <property name="dimentionResult" ref="columnDate"/>
+        <property name="dimensionResult" ref="columnDate"/>
    </bean>
 
    <!-- Chart Writer -->
@@ -83,11 +83,11 @@
 		</list>
 	</property>
 	<property name="xTitle"><value>Periode</value></property>
-	<property name="xDimention" ref="columnDate"></property>
+	<property name="xDimension" ref="columnDate"></property>
         <property name="chartTitle"><value>Population Francaise</value></property>
         <property name="yTitle"><value>Millier d'individus</value></property>
-        <property name="dimentionToGraph">
-		<util:map map-class="java.util.HashMap" key-type="java.lang.String" value-type="info.kapable.tools.pojo.Dimention">
+        <property name="dimensionToGraph">
+		<util:map map-class="java.util.HashMap" key-type="java.lang.String" value-type="info.kapable.tools.pojo.Dimension">
                         <entry key="nombre d'individus" value-ref="columnValue"/>
 		</util:map>
 	</property>

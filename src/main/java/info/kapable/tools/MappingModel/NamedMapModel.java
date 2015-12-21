@@ -7,7 +7,7 @@ import java.util.List;
 import java.util.Map;
 import java.util.Map.Entry;
 
-import info.kapable.tools.pojo.Dimention;
+import info.kapable.tools.pojo.Dimension;
 
 public class NamedMapModel extends IndexedMapModel {
 
@@ -19,25 +19,25 @@ public class NamedMapModel extends IndexedMapModel {
 		this.dimentionNames = new HashMap<Integer,String>();
 	}
 	
-	public void setAttributes(Map<String,Dimention> map)
+	public void setAttributes(Map<String,Dimension> map)
 	{
-	    Iterator<Entry<String, Dimention>> it = map.entrySet().iterator();
+	    Iterator<Entry<String, Dimension>> it = map.entrySet().iterator();
 	    while (it.hasNext()) {
-			Map.Entry<String,Dimention> pair = (Map.Entry<String,Dimention>)it.next();
+			Map.Entry<String,Dimension> pair = (Map.Entry<String,Dimension>)it.next();
 	        String name = (String) pair.getKey();
-	        Dimention dim = (Dimention) pair.getValue();
+	        Dimension dim = (Dimension) pair.getValue();
 	        this.setMapping(dim.getIndex(), dim, name);
 	    }
 	}
 
-	public void setMapping(Integer index, Dimention dimention)
+	public void setMapping(Integer index, Dimension dimension)
 	{
-		this.setMapping(index, dimention, index.toString());
+		this.setMapping(index, dimension, index.toString());
 	}
 	
-	public void setMapping(Integer index, Dimention dimention, String columnName)
+	public void setMapping(Integer index, Dimension dimension, String columnName)
 	{
-		this.modelMap.put(index, dimention);
+		this.modelMap.put(index, dimension);
 		this.dimentionNames.put(index, columnName);
 	}
 	
@@ -45,16 +45,16 @@ public class NamedMapModel extends IndexedMapModel {
 		return this.dimentionNames.get(index);
 	}
 	
-	public String getName(Dimention dim) 
+	public String getName(Dimension dim) 
 	{
 		return this.getName(dim.getIndex());
 	}
 
-	public List<Dimention> getDimentions() {
-		List<Dimention> list = new ArrayList<Dimention>();
-		Iterator<Entry<Integer, Dimention>> it = this.modelMap.entrySet().iterator();
+	public List<Dimension> getDimentions() {
+		List<Dimension> list = new ArrayList<Dimension>();
+		Iterator<Entry<Integer, Dimension>> it = this.modelMap.entrySet().iterator();
 	    while (it.hasNext()) {
-			Map.Entry<Integer,Dimention> pair = (Map.Entry<Integer,Dimention>)it.next();
+			Map.Entry<Integer,Dimension> pair = (Map.Entry<Integer,Dimension>)it.next();
 	        list.add(pair.getValue());
 	    }
 		return list;

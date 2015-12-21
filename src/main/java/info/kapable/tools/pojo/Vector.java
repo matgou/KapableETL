@@ -3,7 +3,7 @@ package info.kapable.tools.pojo;
 import java.util.ArrayList;
 import java.util.List;
 
-import info.kapable.tools.Exception.DimentionException;
+import info.kapable.tools.Exception.DimensionException;
 
 public class Vector {
 	private List<Object> values;
@@ -22,15 +22,15 @@ public class Vector {
 	 * 
 	 * @param dimention
 	 * @param value
-	 * @throws DimentionException 
+	 * @throws DimensionException 
 	 */
-	public void set(int dimention, Object value) throws DimentionException
+	public void set(int dimension, Object value) throws DimensionException
 	{
-		if(dimention < 0 || dimention >= this.values.size())
+		if(dimension < 0 || dimension >= this.values.size())
 		{
-			throw new DimentionException("Trying to put value in unkown dimention (vector is an object in " + this.values.size() + " dimentions)");
+			throw new DimensionException("Trying to put value in unkown dimention (vector is an object in " + this.values.size() + " dimentions)");
 		}
-		this.values.set(dimention, value);
+		this.values.set(dimension, value);
 	}
 	
 	/**
@@ -39,25 +39,25 @@ public class Vector {
 	 * @param dimention
 	 * @return
 	 */
-	public Object get(int dimention)
+	public Object get(int dimension)
 	{
-		return this.values.get(dimention);
+		return this.values.get(dimension);
 	}
-	public Object get(Dimention dimention)
+	public Object get(Dimension dimension)
 	{
-		return this.values.get(dimention.index);
+		return this.values.get(dimension.index);
 	}
 
 	public List<Object> getAllValues()
 	{
 		return this.values;
 	}
-	public void set(Dimention dim, Object valFromString) throws DimentionException {
+	public void set(Dimension dim, Object valFromString) throws DimensionException {
 		this.set(dim.index, valFromString);
 		
 	}
 
-	public void addDimention(Dimention dimentionResult, Object resultVal) {
+	public void addDimension(Dimension dimensionResult, Object resultVal) {
 		this.values.add(resultVal);
 	}
 }

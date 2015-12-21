@@ -6,11 +6,11 @@ import java.util.Calendar;
 
 import info.kapable.tools.Exception.ConversionNotFoundException;
 
-public class DateTimeDimention extends Dimention {
+public class DateTimeDimension extends Dimension {
 
 	private SimpleDateFormat format;
 	
-	public DateTimeDimention(int dimentionLenght, SimpleDateFormat format)
+	public DateTimeDimension(int dimentionLenght, SimpleDateFormat format)
 	{
 		super(dimentionLenght, "java.util.Date");
 		

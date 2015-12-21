@@ -5,7 +5,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 import info.kapable.tools.DataReader.AbstractDataReader;
-import info.kapable.tools.pojo.Dimention;
+import info.kapable.tools.pojo.Dimension;
 import info.kapable.tools.pojo.Vector;
 
 /**

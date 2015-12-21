@@ -19,8 +19,8 @@ import org.jfree.data.time.TimeSeries;
 import org.jfree.data.time.TimeSeriesCollection;
 import org.jfree.data.time.FixedMillisecond;
 
-import info.kapable.tools.pojo.DateTimeDimention;
-import info.kapable.tools.pojo.Dimention;
+import info.kapable.tools.pojo.DateTimeDimension;
+import info.kapable.tools.pojo.Dimension;
 import info.kapable.tools.pojo.Vector;
 
 public class ChartDataWriter extends AbstractDataWriter {
@@ -30,28 +30,28 @@ public class ChartDataWriter extends AbstractDataWriter {
 	
 	private String XTitle;
 	private String YTitle;
-	private HashMap<Dimention, TimeSeries> series;
-	private DateTimeDimention xDimention;
+	private HashMap<Dimension, TimeSeries> series;
+	private DateTimeDimension xDimension;
 	private TimeSeriesCollection dataset;
 	private String filenameResult;
 	
 	public ChartDataWriter(String filenameResult)
 	{
 		super();
-		this.series = new HashMap<Dimention, TimeSeries>();
+		this.series = new HashMap<Dimension, TimeSeries>();
 		this.filenameResult = filenameResult;
 	}
 	@Override
 	public void write(Vector vector) {
 		// TODO Auto-generated method stub
-		Object x = vector.get(xDimention);
+		Object x = vector.get(xDimension);
 
-	    Iterator<Entry<Dimention, TimeSeries>> it = this.series.entrySet().iterator();
+	    Iterator<Entry<Dimension, TimeSeries>> it = this.series.entrySet().iterator();
 	    while (it.hasNext()) {
-	        Map.Entry<Dimention, TimeSeries> pair = (Map.Entry<Dimention, TimeSeries>)it.next();
-	        Dimention dimention=pair.getKey();
+	        Map.Entry<Dimension, TimeSeries> pair = (Map.Entry<Dimension, TimeSeries>)it.next();
+	        Dimension dimension=pair.getKey();
 	        TimeSeries serie = pair.getValue();
-	        serie.addOrUpdate(new FixedMillisecond((Date)x), ((Integer)vector.get(dimention)).intValue());
+	        serie.addOrUpdate(new FixedMillisecond((Date)x), ((Integer)vector.get(dimension)).intValue());
 	    }
 	}
 
@@ -59,9 +59,9 @@ public class ChartDataWriter extends AbstractDataWriter {
 	@Override
 	public void close() {
 		this.dataset = new TimeSeriesCollection();
-	    Iterator<Entry<Dimention, TimeSeries>> it = this.series.entrySet().iterator();
+	    Iterator<Entry<Dimension, TimeSeries>> it = this.series.entrySet().iterator();
 	    while (it.hasNext()) {
-	        Map.Entry<Dimention, TimeSeries> pair = (Map.Entry<Dimention, TimeSeries>)it.next();
+	        Map.Entry<Dimension, TimeSeries> pair = (Map.Entry<Dimension, TimeSeries>)it.next();
 	        TimeSeries serie = pair.getValue();
 	        this.dataset.addSeries(serie);
 	    }
@@ -72,7 +72,7 @@ public class ChartDataWriter extends AbstractDataWriter {
 		         this.dataset,
 		         true , true , false);
 		
-		((DateAxis)(chart.getXYPlot().getDomainAxis())).setDateFormatOverride(this.xDimention.getFormat()); 
+		((DateAxis)(chart.getXYPlot().getDomainAxis())).setDateFormatOverride(this.xDimension.getFormat()); 
         try {
 			ChartUtilities.saveChartAsJPEG(new File(filenameResult), chart, 800, 600);
 		} catch (IOException e) {
@@ -83,15 +83,15 @@ public class ChartDataWriter extends AbstractDataWriter {
 
 	}
 
-	public void setDimentionToGraph(Map<String,Dimention> dimentions)
+	public void setDimensionToGraph(Map<String,Dimension> dimensions)
 	{
-	    Iterator<Entry<String, Dimention>> it = dimentions.entrySet().iterator();
+	    Iterator<Entry<String, Dimension>> it = dimensions.entrySet().iterator();
 	    while (it.hasNext()) {
-	        Map.Entry<String, Dimention> pair = (Map.Entry<String, Dimention>)it.next();
+	        Map.Entry<String, Dimension> pair = (Map.Entry<String, Dimension>)it.next();
 	        String title = pair.getKey();
-	        Dimention dimention = pair.getValue();
+	        Dimension dimension = pair.getValue();
 	        TimeSeries serie = new TimeSeries(title);
-		 	this.series.put(dimention, serie);
+		 	this.series.put(dimension, serie);
 	    }
 	}
 	
@@ -103,12 +103,12 @@ public class ChartDataWriter extends AbstractDataWriter {
 		XTitle = xTitle;
 	}
 
-	public DateTimeDimention getxDimention() {
-		return xDimention;
+	public DateTimeDimension getxDimension() {
+		return xDimension;
 	}
 
-	public void setxDimention(DateTimeDimention xDimention) {
-		this.xDimention = xDimention;
+	public void setxDimension(DateTimeDimension xDimension) {
+		this.xDimension = xDimension;
 	}
 
 	public String getChartTitle() {
