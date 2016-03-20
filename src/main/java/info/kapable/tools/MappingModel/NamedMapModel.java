@@ -41,6 +41,12 @@ public class NamedMapModel extends IndexedMapModel {
 		this.dimentionNames.put(index, columnName);
 	}
 	
+	public void deleteMapping(Integer index)
+	{
+		this.modelMap.remove(index);
+		this.dimentionNames.remove(index);
+	}
+	
 	public String getName(Integer index) {
 		return this.dimentionNames.get(index);
 	}
@@ -59,6 +65,24 @@ public class NamedMapModel extends IndexedMapModel {
 	        list.add(pair.getValue());
 	    }
 		return list;
+	}
+
+	public boolean hasDimentionForName(String dimentionName) {
+		if (this.getDimentionForName(dimentionName) != null) {
+			return true;
+		}
+		return false;
+	}
+
+	public Dimension getDimentionForName(String dimentionName) {
+		Iterator<Entry<Integer, String>> it = this.dimentionNames.entrySet().iterator();
+	    while (it.hasNext()) {
+			Map.Entry<Integer,String> pair = (Map.Entry<Integer,String>)it.next();
+			if(pair.getValue().equals(dimentionName)) {
+				return this.getDimentionFor(pair.getKey());
+			}
+	    }
+		return null;
 	}
 	
 }

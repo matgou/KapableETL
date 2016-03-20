@@ -18,7 +18,7 @@ public abstract class AbstractDataTransform extends AbstractDataReader{
 
 	protected List<AbstractDataReader> input;
 	private int currentReaderIndex = 0;
-	private AbstractDataReader currentReader;
+	protected AbstractDataReader currentReader;
 	
 	public AbstractDataTransform() {
 		super();

@@ -1,0 +1,82 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<beans xmlns="http://www.springframework.org/schema/beans"
+    xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+    xmlns:util="http://www.springframework.org/schema/util"
+    xsi:schemaLocation="http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans.xsd
+      http://www.springframework.org/schema/util http://www.springframework.org/schema/util/spring-util.xsd">
+
+
+   <!-- Data Model -->
+   <bean id="columnId" class="info.kapable.tools.pojo.Dimension">
+       <constructor-arg value="1"/>
+       <constructor-arg value="java.lang.Integer" />
+   </bean>
+   <bean id="columnObjKey" class="info.kapable.tools.pojo.Dimension">
+       <constructor-arg value="2"/>
+       <constructor-arg value="java.lang.String" />
+   </bean>
+   <bean id="columnPropertyKey" class="info.kapable.tools.pojo.Dimension">
+       <constructor-arg value="3"/>
+       <constructor-arg value="java.lang.String" />
+   </bean>
+   <bean id="columnPropertyValue" class="info.kapable.tools.pojo.Dimension">
+       <constructor-arg value="4"/>
+       <constructor-arg value="java.lang.String" />
+   </bean>
+
+   <bean id="dataOutputMapping" class="info.kapable.tools.MappingModel.NamedMapModel">
+	<property name="attributes">
+                <util:map map-class="java.util.HashMap" key-type="java.lang.String" value-type="info.kapable.tools.pojo.Dimention">
+                        <entry key="ID" value-ref="columnId"/>
+                        <entry key="ObjKey" value-ref="columnObjKey"/>
+                </util:map>
+        </property>
+   </bean>
+
+   <bean id="dataInputMapping" class="info.kapable.tools.MappingModel.NamedMapModel">
+	<property name="attributes">
+                <util:map map-class="java.util.HashMap" key-type="java.lang.String" value-type="info.kapable.tools.pojo.Dimention">
+                        <entry key="ID" value-ref="columnId"/>
+                        <entry key="ObjKey" value-ref="columnObjKey"/>
+                        <entry key="PropertyKey" value-ref="columnPropertyKey"/>
+                        <entry key="PropertyValue" value-ref="columnPropertyValue"/>
+                </util:map>
+        </property>
+   </bean>
+
+    <!-- JDBC Reader -->
+   <bean id="input" class="info.kapable.tools.DataReader.JDBCDataReader">
+       <property name="model"><ref bean="dataInputMapping" /></property>
+       <property name="JDBCDriver"><value>org.hsqldb.jdbcDriver</value></property>
+       <property name="dbURL"><value>jdbc:hsqldb:file:example/linearizeToTwig/linearizeToTwig.db</value></property>
+       <property name="dbUsername"><value>SA</value></property>
+       <property name="dbPassword"><value></value></property>
+       <property name="sql" value="SELECT * FROM objectsProperties"></property>
+   </bean>
+   
+   <!-- Linearize (merge object ) -->
+   <bean id="linearizeOperation" class="info.kapable.tools.DataTransform.DynamicMerge">
+       <constructor-arg ref="dataOutputMapping" />
+       <constructor-arg ref="columnObjKey" />
+       <constructor-arg ref="columnPropertyKey" />
+       <constructor-arg ref="columnPropertyValue" />
+        <property name="input">
+                <list>
+                        <ref bean="input"/>
+                </list>
+        </property>
+   </bean>
+
+
+   <!-- Json Writer -->
+   <bean id="output" class="info.kapable.tools.DataWriter.JsonDataWriter">
+       <constructor-arg><util:constant static-field="java.lang.System.out" /></constructor-arg>
+       <constructor-arg ref="dataOutputMapping" />
+        <property name="input">
+                <list>
+                        <ref bean="linearizeOperation" />
+                </list>
+        </property>
+   </bean>
+</beans>

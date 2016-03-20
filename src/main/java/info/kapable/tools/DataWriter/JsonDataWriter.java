@@ -47,7 +47,6 @@ public class JsonDataWriter extends AbstractDataWriter {
 				String colName = model.getName(dim);
 				node.put(colName, string);
 			} catch (DimensionException e) {
-				// TODO Auto-generated catch block
 				e.printStackTrace();
 			}
 		}
@@ -60,7 +59,6 @@ public class JsonDataWriter extends AbstractDataWriter {
 			output.write(mapper.writerWithDefaultPrettyPrinter().writeValueAsString(root));
 			this.output.close();
 		} catch (IOException e) {
-			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}		
 	}

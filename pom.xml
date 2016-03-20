@@ -11,6 +11,7 @@
 		<spring.version>4.2.2.RELEASE</spring.version>
 		<jackson.version>2.6.4</jackson.version>
 		<jfreechart.version>1.0.19</jfreechart.version>
+		<jtwig.version>3.1.1</jtwig.version>
 	</properties>
 
 	<dependencies>
@@ -54,6 +55,13 @@
 			<artifactId>hsqldb</artifactId>
 			<version>2.3.3</version>
 		</dependency>
+		
+        <dependency>
+            <groupId>com.lyncode</groupId>
+            <artifactId>jtwig-core</artifactId>
+            <version>${jtwig.version}</version>
+        </dependency>
+		
 	</dependencies>
 	<build>
 		<plugins>
