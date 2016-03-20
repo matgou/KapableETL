@@ -5,6 +5,7 @@ import java.io.File;
 import java.io.IOException;
 import java.io.OutputStream;
 import java.io.OutputStreamWriter;
+import java.io.Writer;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
@@ -27,7 +28,7 @@ public class TwigDataWriter extends AbstractDataWriter {
 
 	private String templatePath;
 	private List<Map<String, Object>> data;
-	private BufferedWriter output;
+	private Writer output;
 	private NamedMapModel model;
 	private Dimension nameColumn;
 	
@@ -108,4 +109,11 @@ public class TwigDataWriter extends AbstractDataWriter {
 		this.model = model;
 	}
 
+	public Writer getOutput() {
+		return output;
+	}
+
+	public void setOutput(Writer output) {
+		this.output = output;
+	}
 }
