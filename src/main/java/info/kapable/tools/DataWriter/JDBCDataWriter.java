@@ -2,50 +2,48 @@ package info.kapable.tools.DataWriter;
 
 import java.sql.Connection;
 import java.sql.DriverManager;
+import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Statement;
 
 import info.kapable.tools.Exception.DimensionException;
+import info.kapable.tools.MappingModel.IndexedMapModel;
 import info.kapable.tools.MappingModel.NamedMapModel;
 import info.kapable.tools.pojo.Dimension;
 import info.kapable.tools.pojo.Vector;
 
 public class JDBCDataWriter extends AbstractDataWriter {
 
-	private String JDBCDriver = "";  
+	private String JDBCDriver = "";
 	private String dbURL = "";
 	private String sql = "";
 	private ResultSet rs;
-	
 
 	private NamedMapModel dataModel;
 	private String dbPassword;
 	private String dbUsername;
-	
+
 	private Connection conn;
-	
-	private NamedMapModel model;
-	
+
+	private IndexedMapModel model;
 
 	/**
 	 * Initialize Connection
 	 */
-	private void initConnection()
-	{
-		if(this.rs == null)
-		{
+	private void initConnection() {
+		if (this.rs == null) {
 			conn = null;
 			Statement stmt = null;
 
 			try {
-				//STEP 2: Register JDBC driver
+				// STEP 2: Register JDBC driver
 				Class.forName(this.JDBCDriver);
 
-				//STEP 3: Open a connection
+				// STEP 3: Open a connection
 				conn = DriverManager.getConnection(this.dbURL, this.dbUsername, this.dbPassword);
-				//STEP 4: Execute a query
-				stmt = conn.createStatement();
+
+				conn.setAutoCommit(false);
 			} catch (SQLException e) {
 				// TODO Auto-generated catch block
 				e.printStackTrace();
@@ -53,12 +51,11 @@ public class JDBCDataWriter extends AbstractDataWriter {
 				// TODO Auto-generated catch block
 				e.printStackTrace();
 			}
-			
+
 		}
 	}
-	
-	public JDBCDataWriter(NamedMapModel model)
-	{
+
+	public JDBCDataWriter(IndexedMapModel model) {
 		super();
 		this.model = model;
 	}
@@ -66,27 +63,36 @@ public class JDBCDataWriter extends AbstractDataWriter {
 	@Override
 	public void write(Vector vector) {
 		// TODO Prepare stm
-		if(this.conn == null) {
+		if (this.conn == null) {
 			this.initConnection();
 		}
-		
-		for(Dimension dim: this.model.getDimentions())
-		{
-			String string;
-			try {
-				string = dim.getStringFromVal(vector.get(dim));
-				String colName = model.getName(dim);
-				// TODO query.put(colName, string);
-			} catch (DimensionException e) {
-				e.printStackTrace();
-				return;
+
+		// STEP 4: Execute a query
+		try {
+	        PreparedStatement stmt = this.conn.prepareStatement(sql);
+			for (Dimension dim : this.model.getDimentions()) {
+				String string;
+				try {
+					string = dim.getStringFromVal(vector.get(dim));
+					// TODO query.put(colName, string);
+					stmt.setString(this.model.getKeyFor(dim), string);
+				} catch (DimensionException e) {
+					e.printStackTrace();
+					return;
+				}
 			}
+			stmt.executeUpdate();
+		} catch (SQLException e1) {
+			// TODO Auto-generated catch block
+			e1.printStackTrace();
 		}
+
 	}
 
 	@Override
 	public void close() {
 		try {
+			this.conn.commit();
 			this.conn.close();
 		} catch (SQLException e) {
 			// TODO Auto-generated catch block
@@ -134,11 +140,11 @@ public class JDBCDataWriter extends AbstractDataWriter {
 		this.dbUsername = dbUsername;
 	}
 
-	public NamedMapModel getModel() {
+	public IndexedMapModel getModel() {
 		return model;
 	}
 
-	public void setModel(NamedMapModel model) {
+	public void setModel(IndexedMapModel model) {
 		this.model = model;
 	}
 

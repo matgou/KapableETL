@@ -1,14 +1,18 @@
 package info.kapable.tools.MappingModel;
 
 import java.io.InputStream;
+import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.Iterator;
 import java.util.List;
+import java.util.Map;
+import java.util.Map.Entry;
 
 import info.kapable.tools.pojo.Dimension;
 
 public class IndexedMapModel extends AbstractModel {
 
-	HashMap<Integer, Dimension> modelMap;
+	Map<Integer, Dimension> modelMap;
 	
 	public IndexedMapModel()
 	{
@@ -39,6 +43,18 @@ public class IndexedMapModel extends AbstractModel {
 		// nothing to do, in this model the map is independant to data
 		
 	}
+	
+	public Integer getKeyFor(Dimension dim) {
+		Iterator<Entry<Integer, Dimension>> it = this.modelMap.entrySet().iterator();
+	    while (it.hasNext()) {
+			Map.Entry<Integer,Dimension> pair = (Map.Entry<Integer,Dimension>)it.next();
+	        if(pair.getValue() == dim)
+	        {
+	        	return pair.getKey();
+	       	}
+	    }
+		return null;
+	}
 
 	@Override
 	public int getDimentionLenght() {
@@ -55,6 +71,24 @@ public class IndexedMapModel extends AbstractModel {
 		for(Dimension dim: dims) {
 			this.setMapping(dim.getIndex(), dim);
 		}
+	}
+
+	public List<Dimension> getDimentions() {
+		List<Dimension> list = new ArrayList<Dimension>();
+		Iterator<Entry<Integer, Dimension>> it = this.modelMap.entrySet().iterator();
+	    while (it.hasNext()) {
+			Map.Entry<Integer,Dimension> pair = (Map.Entry<Integer,Dimension>)it.next();
+	        list.add(pair.getValue());
+	    }
+		return list;
+	}
+
+	public Map<Integer, Dimension> getModelMap() {
+		return modelMap;
+	}
+
+	public void setModelMap(Map<Integer, Dimension> modelMap) {
+		this.modelMap = modelMap;
 	}
 
 }

@@ -34,6 +34,17 @@
                 </util:map>
         </property>
    </bean>
+   
+   <bean id="dataOutputMapping" class="info.kapable.tools.MappingModel.IndexedMapModel">
+   	<property name="modelMap">
+   		<util:map map-class="java.util.HashMap" key-type="java.lang.Integer" value-type="info.kapable.tools.pojo.Dimention">
+                        <entry key="1" value-ref="columnFirstname"/>
+                        <entry key="2" value-ref="columnLastname"/>
+                        <entry key="3" value-ref="columnStreet"/>
+                        <entry key="4" value-ref="columnCity"/>
+   		</util:map>
+   	</property>
+   </bean>
    <!-- JDBC Reader -->   <!-- Input file -->
    <bean id="fileInput" class="java.io.FileInputStream">
        <constructor-arg value="example/writeToJDBC/input.json"/>
@@ -50,7 +61,7 @@
        <property name="dbUsername"><value>SA</value></property>
        <property name="dbPassword"><value></value></property>
        <property name="sql" value="INSERT INTO CUSTOMER (FIRSTNAME, LASTNAME, STREET, CITY) VALUES (?,?,?,?)"></property>
-       <constructor-arg ref="dataInputMapping" />
+       <constructor-arg ref="dataOutputMapping" />
         <property name="input">
                 <list>
                         <ref bean="input" />
