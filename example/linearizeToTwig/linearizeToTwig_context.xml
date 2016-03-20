@@ -24,12 +24,17 @@
        <constructor-arg value="4"/>
        <constructor-arg value="java.lang.String" />
    </bean>
+   <bean id="columnName" class="info.kapable.tools.pojo.Dimension">
+   		<constructor-arg value="5" />
+   		<constructor-arg value="java.lang.String" />
+   </bean>
 
    <bean id="dataOutputMapping" class="info.kapable.tools.MappingModel.NamedMapModel">
 	<property name="attributes">
                 <util:map map-class="java.util.HashMap" key-type="java.lang.String" value-type="info.kapable.tools.pojo.Dimention">
                         <entry key="ID" value-ref="columnId"/>
                         <entry key="ObjKey" value-ref="columnObjKey"/>
+                        <entry key="name" value-ref="columnName" />
                 </util:map>
         </property>
    </bean>
@@ -61,6 +66,7 @@
        <constructor-arg ref="columnObjKey" />
        <constructor-arg ref="columnPropertyKey" />
        <constructor-arg ref="columnPropertyValue" />
+
         <property name="input">
                 <list>
                         <ref bean="input"/>
@@ -69,14 +75,16 @@
    </bean>
 
 
-   <!-- Json Writer -->
-   <bean id="output" class="info.kapable.tools.DataWriter.JsonDataWriter">
+   <!-- Twig Writer -->
+   <bean id="output" class="info.kapable.tools.DataWriter.TwigDataWriter">
        <constructor-arg><util:constant static-field="java.lang.System.out" /></constructor-arg>
+       <constructor-arg value="example/linearizeToTwig/linearizeToTwig.twig"></constructor-arg>
        <constructor-arg ref="dataOutputMapping" />
-        <property name="input">
-                <list>
-                        <ref bean="linearizeOperation" />
-                </list>
-        </property>
+       <constructor-arg ref="columnName" />
+       <property name="input">
+           <list>
+               <ref bean="linearizeOperation" />
+           </list>
+       </property>
    </bean>
 </beans>

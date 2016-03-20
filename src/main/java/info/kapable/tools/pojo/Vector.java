@@ -6,6 +6,7 @@ import java.util.List;
 import java.util.Map;
 
 import info.kapable.tools.Exception.DimensionException;
+import info.kapable.tools.MappingModel.NamedMapModel;
 
 public class Vector {
 	private Map<Integer,Object> values;
@@ -68,5 +69,19 @@ public class Vector {
 
 	public boolean hasDimension() {
 		return (this.values.size()!=0);
+	}
+
+	public Map<String, Object> toHashMap(NamedMapModel model) {
+		Map<String, Object> vectorAsMap = new HashMap<String, Object>();
+		for(Dimension dim: model.getDimentions())
+		{
+			try {
+				vectorAsMap.put(model.getName(dim), this.get(dim));
+			} catch (DimensionException e) {
+				e.printStackTrace();
+			}
+		}
+		// TODO Auto-generated method stub
+		return vectorAsMap;
 	}
 }
