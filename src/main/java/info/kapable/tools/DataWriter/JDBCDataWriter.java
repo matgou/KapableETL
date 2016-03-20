@@ -1,23 +1,10 @@
 package info.kapable.tools.DataWriter;
 
-import java.io.BufferedWriter;
-import java.io.IOException;
-import java.io.OutputStream;
-import java.io.OutputStreamWriter;
 import java.sql.Connection;
 import java.sql.DriverManager;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Statement;
-import java.util.List;
-import java.util.Map;
-
-import com.fasterxml.jackson.core.JsonFactory;
-import com.fasterxml.jackson.core.JsonProcessingException;
-import com.fasterxml.jackson.databind.JsonNode;
-import com.fasterxml.jackson.databind.ObjectMapper;
-import com.fasterxml.jackson.databind.node.ArrayNode;
-import com.fasterxml.jackson.databind.node.ObjectNode;
 
 import info.kapable.tools.Exception.DimensionException;
 import info.kapable.tools.MappingModel.NamedMapModel;
@@ -59,7 +46,6 @@ public class JDBCDataWriter extends AbstractDataWriter {
 				conn = DriverManager.getConnection(this.dbURL, this.dbUsername, this.dbPassword);
 				//STEP 4: Execute a query
 				stmt = conn.createStatement();
-				rs = stmt.executeQuery(sql);
 			} catch (SQLException e) {
 				// TODO Auto-generated catch block
 				e.printStackTrace();
@@ -71,14 +57,18 @@ public class JDBCDataWriter extends AbstractDataWriter {
 		}
 	}
 	
-	public JDBCDataWriter(OutputStream output, NamedMapModel model)
+	public JDBCDataWriter(NamedMapModel model)
 	{
 		super();
 		this.model = model;
 	}
+
 	@Override
 	public void write(Vector vector) {
 		// TODO Prepare stm
+		if(this.conn == null) {
+			this.initConnection();
+		}
 		
 		for(Dimension dim: this.model.getDimentions())
 		{
@@ -102,6 +92,54 @@ public class JDBCDataWriter extends AbstractDataWriter {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
+	}
+
+	public String getJDBCDriver() {
+		return JDBCDriver;
+	}
+
+	public void setJDBCDriver(String jDBCDriver) {
+		JDBCDriver = jDBCDriver;
+	}
+
+	public String getDbURL() {
+		return dbURL;
+	}
+
+	public void setDbURL(String dbURL) {
+		this.dbURL = dbURL;
+	}
+
+	public String getSql() {
+		return sql;
+	}
+
+	public void setSql(String sql) {
+		this.sql = sql;
+	}
+
+	public String getDbPassword() {
+		return dbPassword;
+	}
+
+	public void setDbPassword(String dbPassword) {
+		this.dbPassword = dbPassword;
+	}
+
+	public String getDbUsername() {
+		return dbUsername;
+	}
+
+	public void setDbUsername(String dbUsername) {
+		this.dbUsername = dbUsername;
+	}
+
+	public NamedMapModel getModel() {
+		return model;
+	}
+
+	public void setModel(NamedMapModel model) {
+		this.model = model;
 	}
 
 }

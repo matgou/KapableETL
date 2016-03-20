@@ -45,7 +45,6 @@
 
    <!-- JDBC Writer -->
    <bean id="output" class="info.kapable.tools.DataWriter.JDBCDataWriter">
-       <property name="model"><ref bean="dataInputMapping" /></property>
        <property name="JDBCDriver"><value>org.hsqldb.jdbcDriver</value></property>
        <property name="dbURL"><value>jdbc:hsqldb:file:example/writeToJDBC/example_db</value></property>
        <property name="dbUsername"><value>SA</value></property>
