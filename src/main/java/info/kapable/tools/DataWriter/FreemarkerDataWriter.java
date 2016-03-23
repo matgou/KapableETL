@@ -60,6 +60,7 @@ public class FreemarkerDataWriter extends AbstractDataWriter {
 		cfg.setDefaultEncoding("UTF-8");
 		Template template;
 		try {
+			cfg.setDirectoryForTemplateLoading(new File("."));
 			template = cfg.getTemplate(this.templatePath);
 			Writer out = new OutputStreamWriter(this.output);
 			Map<String, Object> root = new HashMap<String, Object>();

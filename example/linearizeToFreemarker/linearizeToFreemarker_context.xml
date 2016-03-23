@@ -54,7 +54,7 @@
    <bean id="input" class="info.kapable.tools.DataReader.JDBCDataReader">
        <property name="model"><ref bean="dataInputMapping" /></property>
        <property name="JDBCDriver"><value>org.hsqldb.jdbcDriver</value></property>
-       <property name="dbURL"><value>jdbc:hsqldb:file:example/linearizeToTwig/linearizeToTwig.db</value></property>
+       <property name="dbURL"><value>jdbc:hsqldb:file:example/linearizeToFreemarker/linearizeToFreemarker.db</value></property>
        <property name="dbUsername"><value>SA</value></property>
        <property name="dbPassword"><value></value></property>
        <property name="sql" value="SELECT * FROM objectsProperties"></property>
@@ -75,10 +75,10 @@
    </bean>
 
 
-   <!-- Twig Writer -->
-   <bean id="output" class="info.kapable.tools.DataWriter.TwigDataWriter">
+   <!-- FreemarkerDataWriter Writer -->
+   <bean id="output" class="info.kapable.tools.DataWriter.FreemarkerDataWriter">
        <constructor-arg><util:constant static-field="java.lang.System.out" /></constructor-arg>
-       <constructor-arg value="example/linearizeToTwig/linearizeToTwig.twig"></constructor-arg>
+       <constructor-arg value="example/linearizeToFreemarker/linearizeToFreemarker.tpl"></constructor-arg>
        <constructor-arg ref="dataOutputMapping" />
        <constructor-arg ref="columnName" />
        <property name="input">
