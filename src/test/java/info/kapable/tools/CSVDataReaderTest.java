@@ -1,24 +1,21 @@
 package info.kapable.tools;
 
-import static org.junit.Assert.*;
-
-import org.junit.Test;
-
+import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.fail;
 import info.kapable.tools.DataReader.CSVDataReader;
 import info.kapable.tools.Exception.DimensionException;
 import info.kapable.tools.MappingModel.IndexedMapModel;
 import info.kapable.tools.pojo.DateTimeDimension;
 import info.kapable.tools.pojo.Dimension;
 import info.kapable.tools.pojo.Vector;
-import sun.misc.IOUtils;
 
 import java.io.ByteArrayInputStream;
 import java.io.IOException;
-import java.io.InputStream;
 import java.io.UnsupportedEncodingException;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
-import java.util.Date;
+
+import org.junit.Test;
 
 public class CSVDataReaderTest {
 

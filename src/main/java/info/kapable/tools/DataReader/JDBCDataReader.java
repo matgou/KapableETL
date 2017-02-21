@@ -1,6 +1,7 @@
 package info.kapable.tools.DataReader;
 
 import java.io.IOException;
+import java.math.BigDecimal;
 import java.sql.Connection;
 import java.sql.DriverManager;
 import java.sql.ResultSet;
@@ -71,14 +72,16 @@ public class JDBCDataReader extends AbstractDataReader {
 			{
 				for(Dimension dim: this.dataModel.getDimentions())
 				{
-					Object resultVal = rs.getObject(this.dataModel.getName(dim), Class.forName(dim.getType()));
+					//Object resultVal = rs.getObject(this.dataModel.getName(dim)), Class.forName(dim.getType()));
+					Object resultVal = rs.getObject(this.dataModel.getName(dim));
+					if(resultVal instanceof java.math.BigDecimal) {
+						java.math.BigDecimal d = (BigDecimal) resultVal;
+						resultVal = d.doubleValue();
+					}
 					vector.addDimension(dim, resultVal);
 				}
 			}
 		} catch (SQLException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-		} catch (ClassNotFoundException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}

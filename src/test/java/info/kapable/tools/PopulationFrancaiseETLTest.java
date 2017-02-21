@@ -1,29 +1,15 @@
 package info.kapable.tools;
 
-import static org.junit.Assert.fail;
-
-import java.io.ByteArrayInputStream;
-import java.io.File;
-import java.io.IOException;
-import java.text.ParseException;
-import java.text.SimpleDateFormat;
-import java.util.ArrayList;
-import java.util.List;
-
-import org.springframework.context.ApplicationContext;
-import org.springframework.context.support.FileSystemXmlApplicationContext;
-
-import info.kapable.tools.DataReader.AbstractDataReader;
-import info.kapable.tools.DataReader.CSVDataReader;
 import info.kapable.tools.DataWriter.AbstractDataWriter;
-import info.kapable.tools.DataWriter.JsonDataWriter;
-import info.kapable.tools.MappingModel.IndexedMapModel;
-import info.kapable.tools.MappingModel.NamedMapModel;
-import info.kapable.tools.pojo.DateTimeDimension;
-import info.kapable.tools.pojo.Dimension;
+
+import java.io.File;
+
 import junit.framework.Test;
 import junit.framework.TestCase;
 import junit.framework.TestSuite;
+
+import org.springframework.context.ApplicationContext;
+import org.springframework.context.support.FileSystemXmlApplicationContext;
 
 /**
  * Unit test for simple App.
