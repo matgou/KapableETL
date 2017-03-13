@@ -43,9 +43,12 @@ public class JsonDataWriter extends AbstractDataWriter {
 		{
 			String string;
 			try {
-				string = dim.getStringFromVal(vector.get(dim));
-				String colName = model.getName(dim);
-				node.put(colName, string);
+				Object val = vector.get(dim);
+				if(val != null) {
+					string = dim.getStringFromVal(val);
+					String colName = model.getName(dim);
+					node.put(colName, string);
+				}
 			} catch (DimensionException e) {
 				e.printStackTrace();
 			}
